@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "updatedAt": "2026-07-02",
+  "apps": [
+    {
+      "id": "jellyfin",
+      "name": "Jellyfin",
+      "description": "Açık kaynak medya sistemi ve ev sinema platformu. Filmlerinizi, serilerinizi ve müziklerinizi organize eder ve yayınlar.",
+      "category": "Media",
+      "icon": "Film",
+      "defaultPort": "8096",
+      "version": "1.0.0",
+      "dockerCompose": "version: '3.8'\nservices:\n  jellyfin:\n    image: jellyfin/jellyfin:latest\n    container_name: jellyfin\n    user: 1000:1000\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"8096:8096\"\n    volumes:\n      - ${USERDATA}/config:/config\n      - ${USERDATA}/cache:/cache\n      - ${USERDATA}/media:/media\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
+      "infoUrl": "https://jellyfin.org"
+    },
+    {
+      "id": "nextcloud",
+      "name": "Nextcloud",
+      "description": "Kişisel bulut depolama platformu. Fotoğraf, belge ve takvimlerinizi güvenle depolayın, paylaşın ve eşzamanlayın.",
+      "category": "Cloud",
+      "icon": "Cloud",
+      "defaultPort": "8080",
+      "version": "1.0.0",
+      "dockerCompose": "version: '3.8'\nservices:\n  nextcloud:\n    image: nextcloud:latest\n    container_name: nextcloud\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"8080:80\"\n    volumes:\n      - ${USERDATA}/data:/var/www/html\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
+      "infoUrl": "https://nextcloud.com"
+    },
+    {
+      "id": "vaultwarden",
+      "name": "Vaultwarden",
+      "description": "Hafif ve güvenli, Bitwarden uyumlu açık kaynaklı parola yöneticisi backend sunucusu.",
+      "category": "Security",
+      "icon": "Lock",
+      "defaultPort": "8022",
+      "version": "1.0.0",
+      "dockerCompose": "version: '3.8'\nservices:\n  vaultwarden:\n    image: vaultwarden/server:latest\n    container_name: vaultwarden\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"8022:80\"\n    volumes:\n      - ${USERDATA}/data:/data\n    environment:\n      - SIGNUPS_ALLOWED=true\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
+      "infoUrl": "https://github.com/dani-garcia/vaultwarden"
+    },
+    {
+      "id": "beszel",
+      "name": "Beszel",
+      "description": "Hafif, şık ve anlık sistem izleme paneli. İşlemci, RAM, disk kullanımı ve Docker istatistiklerini izler.",
+      "category": "Utilities",
+      "icon": "Activity",
+      "defaultPort": "4567",
+      "version": "1.0.0",
+      "dockerCompose": "version: '3.8'\nservices:\n  beszel:\n    image: henrygd/beszel:latest\n    container_name: beszel\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"4567:8090\"\n    volumes:\n      - ${USERDATA}/data:/data\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
+      "infoUrl": "https://github.com/henrygd/beszel"
+    },
+    {
+      "id": "adguardhome",
+      "name": "AdGuard Home",
+      "description": "Ağ düzeyinde reklam engelleme, takipçi engelleme ve yerel DNS sunucu yönetim yazılımı.",
+      "category": "Network",
+      "icon": "Shield",
+      "defaultPort": "3030",
+      "version": "1.0.0",
+      "dockerCompose": "version: '3.8'\nservices:\n  adguardhome:\n    image: adguard/adguardhome:latest\n    container_name: adguardhome\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"3030:80/tcp\"\n      - \"3031:3000/tcp\"\n      - \"53:53/udp\"\n      - \"53:53/tcp\"\n    volumes:\n      - ${USERDATA}/work:/opt/adguardhome/work\n      - ${USERDATA}/conf:/opt/adguardhome/conf\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
+      "infoUrl": "https://adguard.com/adguard-home.html",
+      "setupNote": "AdGuard Home ilk kurulumda ayrı bir kurulum portunda (varsayılan 3031) çalışır. Önce sunucu adresinizin 3031 portuna gidip (ör. http://SUNUCU-IP:3031) kurulumu tamamlayın; kullanıcı adı ve parolanızı belirleyin. Kurulum bitince arayüz normal portuna geçer ve uygulamayı Orb içinden açabilirsiniz."
+    },
+    {
+      "id": "postgres",
+      "name": "PostgreSQL",
+      "description": "Yüksek performanslı, ilişkisel açık kaynaklı veri tabanı sistemi. Güçlü özellikleri ve genişletilebilirliği ile bilinir.",
+      "category": "Database",
+      "icon": "Database",
+      "defaultPort": "5432",
+      "version": "1.0.0",
+      "dockerCompose": "version: '3.8'\nservices:\n  postgres:\n    image: postgres:15-alpine\n    container_name: postgres\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"5432:5432\"\n    environment:\n      - POSTGRES_USER=admin\n      - POSTGRES_PASSWORD=secret_postgres_pass\n      - POSTGRES_DB=homedb\n    volumes:\n      - ${USERDATA}/data:/var/lib/postgresql/data\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
+      "infoUrl": "https://www.postgresql.org"
+    }
+  ]
+}
