@@ -68,6 +68,19 @@
       "version": "1.0.0",
       "dockerCompose": "version: '3.8'\nservices:\n  postgres:\n    image: postgres:15-alpine\n    container_name: postgres\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"5432:5432\"\n    environment:\n      - POSTGRES_USER=admin\n      - POSTGRES_PASSWORD=secret_postgres_pass\n      - POSTGRES_DB=homedb\n    volumes:\n      - ${USERDATA}/data:/var/lib/postgresql/data\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
       "infoUrl": "https://www.postgresql.org"
+    },
+    {
+      "id": "n8n",
+      "name": "n8n",
+      "description": "Gelişmiş, açık kaynaklı ve düğüm tabanlı iş akışı otomasyon aracı. Uygulamaları birbirine bağlayıp görevleri otomatikleştirmenizi sağlar.",
+      "category": "Utilities",
+      "icon": "Workflow",
+      "defaultPort": "5678",
+      "version": "1.0.0",
+      "dockerCompose": "version: '3.8'\nservices:\n  n8n:\n    image: docker.n8n.io/n8nio/n8n\n    container_name: ${APP_ID}\n    restart: unless-stopped\n    ports:\n      - \"5678:5678\"\n    environment:\n      - GENERIC_TIMEZONE=Europe/Istanbul\n      - TZ=Europe/Istanbul\n      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true\n      - WEBHOOK_URL=https://${SERVER_DOMAIN}\n    volumes:\n      - ${USERDATA}/.n8n:/home/node/.n8n\n    networks:\n      - ${DOCKER_NETWORK}\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
+      "infoUrl": "https://docs.n8n.io",
+      "setupNote": "İlk kurulumda arayüze erişip yönetici (admin) hesabınızı oluşturmanız gerekmektedir."
     }
+
   ]
 }
