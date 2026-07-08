@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-07-02",
+  "updatedAt": "2026-07-08",
   "apps": [
     {
       "id": "jellyfin",
@@ -81,6 +81,5 @@
       "infoUrl": "https://docs.n8n.io",
       "setupNote": "İlk kurulumda arayüze erişip yönetici (admin) hesabınızı oluşturmanız gerekmektedir."
     }
-
   ]
 }
