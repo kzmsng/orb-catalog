@@ -70,29 +70,6 @@
       "infoUrl": "https://www.postgresql.org"
     },
     {
-      "id": "pocketbase",
-      "name": "PocketBase",
-      "description": "Öğrenci verilerini, içerik akışlarını veya yapılandırılmış herhangi bir datayı Google Sheets kullanmadan kendi sunucunda tutabileceğin ultra hafif veritabanı. n8n ile API üzerinden harika konuşur.",
-      "category": "Database",
-      "icon": "DatabaseZap",
-      "defaultPort": "8090",
-      "version": "0.22.17",
-      "dockerCompose": "version: '3.8'\nservices:\n  pocketbase:\n    image: ghcr.io/pocketbase/pocketbase:latest\n    container_name: pocketbase\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"8090:8090\"\n    volumes:\n      - ${USERDATA}/pb_data:/pb/pb_data\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
-      "infoUrl": "https://pocketbase.io",
-      "setupNote": "Kurulumdan sonra http://SUNUCU-IP:8090/_/ adresinden admin panelini oluşturabilirsiniz."
-    },
-    {
-      "id": "gotenberg",
-      "name": "Gotenberg",
-      "description": "Görünmez bir PDF oluşturma motoru. n8n üzerinden göndereceğin HTML dosyalarını veya metinleri anında profesyonel PDF'lere (bilgi notları, sertifikalar veya raporlar) dönüştürür.",
-      "category": "Utilities",
-      "icon": "FileCode",
-      "defaultPort": "8089",
-      "version": "8.11.0",
-      "dockerCompose": "version: '3.8'\nservices:\n  gotenberg:\n    image: gotenberg/gotenberg:8\n    container_name: gotenberg\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"8089:3000\"\n    command:\n      - \"gotenberg\"\n      - \"--api-timeout=30s\"\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
-      "infoUrl": "https://gotenberg.dev"
-    },
-    {
       "id": "n8n",
       "name": "n8n",
       "description": "Gelişmiş, açık kaynaklı ve düğüm tabanlı iş akışı otomasyon aracı. Uygulamaları birbirine bağlayıp görevleri otomatikleştirmenizi sağlar.",
