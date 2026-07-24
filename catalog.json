@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-07-08",
+  "updatedAt": "2026-07-25",
   "apps": [
     {
       "id": "jellyfin",
@@ -80,6 +80,18 @@
       "dockerCompose": "version: '3.8'\nservices:\n  n8n:\n    image: docker.n8n.io/n8nio/n8n\n    container_name: ${APP_ID}\n    restart: unless-stopped\n    ports:\n      - \"5678:5678\"\n    environment:\n      - GENERIC_TIMEZONE=Europe/Istanbul\n      - TZ=Europe/Istanbul\n      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true\n      - WEBHOOK_URL=https://${SERVER_DOMAIN}\n    volumes:\n      - ${USERDATA}/.n8n:/home/node/.n8n\n    networks:\n      - ${DOCKER_NETWORK}\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
       "infoUrl": "https://docs.n8n.io",
       "setupNote": "İlk kurulumda arayüze erişip yönetici (admin) hesabınızı oluşturmanız gerekmektedir."
+    },
+    {
+      "id": "redis-commander",
+      "name": "Redis Commander",
+      "description": "Redis veritabanları için hafif, web tabanlı yönetim ve izleme arayüzü. Key'leri görüntüleme/düzenleme ve queue durumunu takip etme imkanı sunar.",
+      "category": "Database",
+      "icon": "Database",
+      "defaultPort": "8081",
+      "version": "1.0.0",
+      "dockerCompose": "version: '3.8'\nservices:\n  redis-commander:\n    image: rediscommander/redis-commander:latest\n    container_name: ${APP_ID}\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"8081:8081\"\n    environment:\n      - REDIS_HOSTS=local:redis:6379\n      - HTTP_USER=admin\n      - HTTP_PASSWORD=change_this_password\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
+      "infoUrl": "https://github.com/joeferner/redis-commander",
+      "setupNote": "REDIS_HOSTS içindeki 'redis' kısmını izlemek istediğiniz Redis container'ının gerçek adıyla değiştirin (aynı Docker network'ünde olmalı). HTTP_USER ve HTTP_PASSWORD'ü mutlaka kendi güçlü değerlerinizle değiştirin — bu arayüz varsayılan olarak kimlik doğrulamasız çalışır ve dışarıya açık bırakılmamalıdır."
     }
   ]
 }
