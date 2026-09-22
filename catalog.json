@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": "2026-07-25",
+  "updatedAt": "2026-09-24",
   "apps": [
     {
       "id": "jellyfin",
@@ -11,7 +11,12 @@
       "defaultPort": "8096",
       "version": "1.0.0",
       "dockerCompose": "version: '3.8'\nservices:\n  jellyfin:\n    image: jellyfin/jellyfin:latest\n    container_name: jellyfin\n    user: 1000:1000\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"8096:8096\"\n    volumes:\n      - ${USERDATA}/config:/config\n      - ${USERDATA}/cache:/cache\n      - ${USERDATA}/media:/media\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
-      "infoUrl": "https://jellyfin.org"
+      "infoUrl": "https://jellyfin.org",
+      "update": {
+        "registry": {
+          "image": "jellyfin/jellyfin"
+        }
+      }
     },
     {
       "id": "nextcloud",
@@ -22,7 +27,16 @@
       "defaultPort": "8080",
       "version": "1.0.0",
       "dockerCompose": "version: '3.8'\nservices:\n  nextcloud:\n    image: nextcloud:latest\n    container_name: nextcloud\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"8080:80\"\n    volumes:\n      - ${USERDATA}/data:/var/www/html\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
-      "infoUrl": "https://nextcloud.com"
+      "infoUrl": "https://nextcloud.com",
+      "update": {
+        "registry": {
+          "image": "nextcloud"
+        },
+        "release": {
+          "provider": "github_release",
+          "repository": "nextcloud/server"
+        }
+      }
     },
     {
       "id": "vaultwarden",
@@ -33,7 +47,16 @@
       "defaultPort": "8022",
       "version": "1.0.0",
       "dockerCompose": "version: '3.8'\nservices:\n  vaultwarden:\n    image: vaultwarden/server:latest\n    container_name: vaultwarden\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"8022:80\"\n    volumes:\n      - ${USERDATA}/data:/data\n    environment:\n      - SIGNUPS_ALLOWED=true\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
-      "infoUrl": "https://github.com/dani-garcia/vaultwarden"
+      "infoUrl": "https://github.com/dani-garcia/vaultwarden",
+      "update": {
+        "registry": {
+          "image": "vaultwarden/server"
+        },
+        "release": {
+          "provider": "github_release",
+          "repository": "dani-garcia/vaultwarden"
+        }
+      }
     },
     {
       "id": "beszel",
@@ -44,7 +67,16 @@
       "defaultPort": "4567",
       "version": "1.0.0",
       "dockerCompose": "version: '3.8'\nservices:\n  beszel:\n    image: henrygd/beszel:latest\n    container_name: beszel\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"4567:8090\"\n    volumes:\n      - ${USERDATA}/data:/data\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
-      "infoUrl": "https://github.com/henrygd/beszel"
+      "infoUrl": "https://github.com/henrygd/beszel",
+      "update": {
+        "registry": {
+          "image": "henrygd/beszel"
+        },
+        "release": {
+          "provider": "github_release",
+          "repository": "henrygd/beszel"
+        }
+      }
     },
     {
       "id": "adguardhome",
@@ -56,7 +88,16 @@
       "version": "1.0.0",
       "dockerCompose": "version: '3.8'\nservices:\n  adguardhome:\n    image: adguard/adguardhome:latest\n    container_name: adguardhome\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"3030:80/tcp\"\n      - \"3031:3000/tcp\"\n      - \"53:53/udp\"\n      - \"53:53/tcp\"\n    volumes:\n      - ${USERDATA}/work:/opt/adguardhome/work\n      - ${USERDATA}/conf:/opt/adguardhome/conf\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
       "infoUrl": "https://adguard.com/adguard-home.html",
-      "setupNote": "AdGuard Home ilk kurulumda ayrı bir kurulum portunda (varsayılan 3031) çalışır. Önce sunucu adresinizin 3031 portuna gidip (ör. http://SUNUCU-IP:3031) kurulumu tamamlayın; kullanıcı adı ve parolanızı belirleyin. Kurulum bitince arayüz normal portuna geçer ve uygulamayı Orb içinden açabilirsiniz."
+      "setupNote": "AdGuard Home ilk kurulumda ayrı bir kurulum portunda (varsayılan 3031) çalışır. Önce sunucu adresinizin 3031 portuna gidip (ör. http://SUNUCU-IP:3031) kurulumu tamamlayın; kullanıcı adı ve parolanızı belirleyin. Kurulum bitince arayüz normal portuna geçer ve uygulamayı Orb içinden açabilirsiniz.",
+      "update": {
+        "registry": {
+          "image": "adguard/adguardhome"
+        },
+        "release": {
+          "provider": "github_release",
+          "repository": "AdguardTeam/AdGuardHome"
+        }
+      }
     },
     {
       "id": "postgres",
@@ -67,7 +108,12 @@
       "defaultPort": "5432",
       "version": "1.0.0",
       "dockerCompose": "version: '3.8'\nservices:\n  postgres:\n    image: postgres:15-alpine\n    container_name: postgres\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"5432:5432\"\n    environment:\n      - POSTGRES_USER=admin\n      - POSTGRES_PASSWORD=secret_postgres_pass\n      - POSTGRES_DB=homedb\n    volumes:\n      - ${USERDATA}/data:/var/lib/postgresql/data\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
-      "infoUrl": "https://www.postgresql.org"
+      "infoUrl": "https://www.postgresql.org",
+      "update": {
+        "registry": {
+          "image": "postgres"
+        }
+      }
     },
     {
       "id": "n8n",
@@ -100,7 +146,237 @@
       "version": "1.0.0",
       "dockerCompose": "version: '3.8'\nservices:\n  redis-commander:\n    image: rediscommander/redis-commander:latest\n    container_name: ${APP_ID}\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"8081:8081\"\n    environment:\n      - REDIS_HOSTS=local:redis:6379\n      - HTTP_USER=admin\n      - HTTP_PASSWORD=change_this_password\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
       "infoUrl": "https://github.com/joeferner/redis-commander",
-      "setupNote": "REDIS_HOSTS içindeki 'redis' kısmını izlemek istediğiniz Redis container'ının gerçek adıyla değiştirin (aynı Docker network'ünde olmalı). HTTP_USER ve HTTP_PASSWORD'ü mutlaka kendi güçlü değerlerinizle değiştirin — bu arayüz varsayılan olarak kimlik doğrulamasız çalışır ve dışarıya açık bırakılmamalıdır."
+      "setupNote": "REDIS_HOSTS içindeki 'redis' kısmını izlemek istediğiniz Redis container'ının gerçek adıyla değiştirin (aynı Docker network'ünde olmalı). HTTP_USER ve HTTP_PASSWORD'ü mutlaka kendi güçlü değerlerinizle değiştirin — bu arayüz varsayılan olarak kimlik doğrulamasız çalışır ve dışarıya açık bırakılmamalıdır.",
+      "update": {
+        "registry": {
+          "image": "rediscommander/redis-commander"
+        }
+      }
+    },
+    {
+      "id": "uptime-kuma",
+      "name": "Uptime Kuma",
+      "description": "Kendi sunucunuzda barındırılan, kolay kullanımlı çalışma süresi (uptime) izleme aracı. HTTP, TCP, DNS ve daha fazlası için durum sayfaları ve bildirimler sunar.",
+      "category": "Monitoring",
+      "icon": "Activity",
+      "defaultPort": "3001",
+      "version": "1.0.0",
+      "dockerCompose": "version: '3.8'\nservices:\n  uptime-kuma:\n    image: louislam/uptime-kuma:latest\n    container_name: uptime-kuma\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"3001:3001\"\n    volumes:\n      - ${USERDATA}/data:/app/data\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
+      "infoUrl": "https://github.com/louislam/uptime-kuma",
+      "update": {
+        "registry": {
+          "image": "louislam/uptime-kuma"
+        },
+        "release": {
+          "provider": "github_release",
+          "repository": "louislam/uptime-kuma"
+        }
+      }
+    },
+    {
+      "id": "gitea",
+      "name": "Gitea",
+      "description": "Hafif, kendi sunucunuzda barındırılan Git servisi. Depo yönetimi, issue/PR takibi ve CI entegrasyonu sunar.",
+      "category": "Developer Tools",
+      "icon": "Code",
+      "defaultPort": "3050",
+      "version": "1.0.0",
+      "dockerCompose": "version: '3.8'\nservices:\n  gitea:\n    image: gitea/gitea:latest\n    container_name: gitea\n    environment:\n      - USER_UID=1000\n      - USER_GID=1000\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"3050:3000\"\n      - \"2222:22\"\n    volumes:\n      - ${USERDATA}/data:/data\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
+      "infoUrl": "https://docs.gitea.com",
+      "setupNote": "SSH erişimi için host'un 2222 portu kullanılır (22 değil, sunucunun kendi SSH'ıyla çakışmasın diye). Git üzerinden klonlarken ssh://git@SUNUCU-IP:2222/... formatını kullanın.",
+      "update": {
+        "registry": {
+          "image": "gitea/gitea"
+        },
+        "release": {
+          "provider": "github_release",
+          "repository": "go-gitea/gitea"
+        }
+      }
+    },
+    {
+      "id": "memos",
+      "name": "Memos",
+      "description": "Hafif, kendi sunucunuzda barındırılan not alma ve kısa gönderi (memo) uygulaması. Markdown destekli, hızlı ve gizlilik odaklı.",
+      "category": "Productivity",
+      "icon": "StickyNote",
+      "defaultPort": "5230",
+      "version": "1.0.0",
+      "dockerCompose": "version: '3.8'\nservices:\n  memos:\n    image: neosmemo/memos:latest\n    container_name: memos\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"5230:5230\"\n    volumes:\n      - ${USERDATA}/data:/var/opt/memos\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
+      "infoUrl": "https://www.usememos.com",
+      "update": {
+        "registry": {
+          "image": "neosmemo/memos"
+        },
+        "release": {
+          "provider": "github_release",
+          "repository": "usememos/memos"
+        }
+      }
+    },
+    {
+      "id": "linkding",
+      "name": "Linkding",
+      "description": "Sade ve hızlı, kendi sunucunuzda barındırılan yer imi (bookmark) yöneticisi. Etiketleme, tam metin arama ve tarayıcı uzantısı desteği sunar.",
+      "category": "Productivity",
+      "icon": "Bookmark",
+      "defaultPort": "9090",
+      "version": "1.0.0",
+      "dockerCompose": "version: '3.8'\nservices:\n  linkding:\n    image: sissbruecker/linkding:latest\n    container_name: linkding\n    environment:\n      - LD_SUPERUSER_NAME=admin\n      - LD_SUPERUSER_PASSWORD=change_this_password\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"9090:9090\"\n    volumes:\n      - ${USERDATA}/data:/etc/linkding/data\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
+      "infoUrl": "https://github.com/sissbruecker/linkding",
+      "setupNote": "LD_SUPERUSER_PASSWORD'ü mutlaka kendi güçlü parolanızla değiştirin. İlk girişte admin / (belirlediğiniz parola) kullanın.",
+      "update": {
+        "registry": {
+          "image": "sissbruecker/linkding"
+        },
+        "release": {
+          "provider": "github_release",
+          "repository": "sissbruecker/linkding"
+        }
+      }
+    },
+    {
+      "id": "minio",
+      "name": "MinIO",
+      "description": "Yüksek performanslı, S3 uyumlu nesne depolama sunucusu. Kendi sunucunuzda kendi bulut depolama altyapınızı çalıştırın.",
+      "category": "Storage",
+      "icon": "HardDrive",
+      "defaultPort": "9001",
+      "version": "1.0.0",
+      "dockerCompose": "version: '3.8'\nservices:\n  minio:\n    image: quay.io/minio/minio:latest\n    container_name: minio\n    command: server /data --console-address \":9001\"\n    environment:\n      - MINIO_ROOT_USER=admin\n      - MINIO_ROOT_PASSWORD=change_this_password\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"9000:9000\"\n      - \"9001:9001\"\n    volumes:\n      - ${USERDATA}/data:/data\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
+      "infoUrl": "https://min.io",
+      "setupNote": "MINIO_ROOT_PASSWORD'ü mutlaka kendi güçlü parolanızla değiştirin. Yönetim konsolu 9001 portunda, S3 API 9000 portundadır.",
+      "update": {
+        "registry": {
+          "image": "quay.io/minio/minio"
+        }
+      }
+    },
+    {
+      "id": "homepage",
+      "name": "Homepage",
+      "description": "Modern, hızlı ve son derece özelleştirilebilir kendi sunucunuz için başlangıç sayfası / gösterge paneli. Servislerinizi tek bir yerden bağlantılayın.",
+      "category": "Utilities",
+      "icon": "LayoutDashboard",
+      "defaultPort": "3060",
+      "version": "1.0.0",
+      "dockerCompose": "version: '3.8'\nservices:\n  homepage:\n    image: ghcr.io/gethomepage/homepage:latest\n    container_name: homepage\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"3060:3000\"\n    volumes:\n      - ${USERDATA}/config:/app/config\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
+      "infoUrl": "https://gethomepage.dev",
+      "setupNote": "İlk kurulumda /app/config altındaki yapılandırma dosyaları boştur; servislerinizi eklemek için Homepage'in kendi dokümantasyonundaki config dosyalarını (services.yaml vb.) düzenlemeniz gerekir.",
+      "update": {
+        "registry": {
+          "image": "ghcr.io/gethomepage/homepage"
+        },
+        "release": {
+          "provider": "github_release",
+          "repository": "gethomepage/homepage"
+        }
+      }
+    },
+    {
+      "id": "wg-easy",
+      "name": "WireGuard Easy",
+      "description": "WireGuard VPN sunucusunu ve istemci yönetimini basit bir web arayüzünden yürütmenizi sağlayan, kendi sunucunuzda barındırılan araç.",
+      "category": "Network",
+      "icon": "Network",
+      "defaultPort": "51821",
+      "version": "1.0.0",
+      "dockerCompose": "version: '3.8'\nservices:\n  wg-easy:\n    image: ghcr.io/wg-easy/wg-easy:latest\n    container_name: wg-easy\n    environment:\n      - WG_HOST=CHANGE_ME_SERVER_PUBLIC_IP_OR_DOMAIN\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"51820:51820/udp\"\n      - \"51821:51821/tcp\"\n    volumes:\n      - ${USERDATA}/data:/etc/wireguard\n    cap_add:\n      - NET_ADMIN\n      - SYS_MODULE\n    sysctls:\n      - net.ipv4.ip_forward=1\n      - net.ipv4.conf.all.src_valid_mark=1\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
+      "infoUrl": "https://github.com/wg-easy/wg-easy",
+      "setupNote": "Kurulumdan sonra compose dosyasındaki WG_HOST değerini sunucunuzun gerçek genel IP adresi veya alan adıyla değiştirin, ardından yeniden başlatın. 51820/udp portunun sunucunuzda/yönlendiricinizde açık olduğundan emin olun.",
+      "update": {
+        "registry": {
+          "image": "ghcr.io/wg-easy/wg-easy"
+        },
+        "release": {
+          "provider": "github_release",
+          "repository": "wg-easy/wg-easy"
+        }
+      }
+    },
+    {
+      "id": "redis",
+      "name": "Redis",
+      "description": "Bellek içi, genel amaçlı anahtar-değer veri deposu. Diğer uygulamalarınız (ör. n8n kuyruk modu, önbellekleme) için altyapı servisi olarak kullanılır.",
+      "category": "Database",
+      "icon": "Database",
+      "defaultPort": "6379",
+      "version": "1.0.0",
+      "type": "infrastructure",
+      "dockerCompose": "version: '3.8'\nservices:\n  redis:\n    image: redis:7-alpine\n    container_name: redis\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"6379:6379\"\n    volumes:\n      - ${USERDATA}/data:/data\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
+      "infoUrl": "https://redis.io",
+      "setupNote": "Redis varsayılan olarak kimlik doğrulamasız çalışır; yalnızca aynı Docker ağı içindeki diğer uygulamalarınız (ör. n8n, Redis Commander) tarafından kullanılmalıdır — portu dışarıya (internete) açmayın.",
+      "update": {
+        "registry": {
+          "image": "redis"
+        }
+      }
+    },
+    {
+      "id": "traefik",
+      "name": "Traefik",
+      "description": "Docker container'larınızı otomatik keşfeden, kendi sunucunuzda barındırılan modern ters vekil (reverse proxy) ve yük dengeleyici.",
+      "category": "Network",
+      "icon": "Route",
+      "defaultPort": "8080",
+      "version": "1.0.0",
+      "type": "infrastructure",
+      "dockerCompose": "version: '3.8'\nservices:\n  traefik:\n    image: traefik:latest\n    container_name: traefik\n    command:\n      - \"--api.dashboard=true\"\n      - \"--providers.docker=true\"\n      - \"--providers.docker.exposedbydefault=false\"\n      - \"--entrypoints.web.address=:80\"\n      - \"--entrypoints.websecure.address=:443\"\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"80:80\"\n      - \"443:443\"\n    volumes:\n      - /var/run/docker.sock:/var/run/docker.sock:ro\n      - ${USERDATA}/data:/data\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
+      "infoUrl": "https://doc.traefik.io/traefik",
+      "setupNote": "Bu servis Docker soketini (salt okunur) mount eder ve konteynerlerinizi otomatik keşfeder — kimin bu sunucuya erişebildiğine dikkat edin. Dashboard varsayılan olarak kimlik doğrulamasız açıktır; üretimde kullanmadan önce mutlaka bir kimlik doğrulama middleware'i ve TLS yapılandırın.",
+      "update": {
+        "registry": {
+          "image": "traefik"
+        },
+        "release": {
+          "provider": "github_release",
+          "repository": "traefik/traefik"
+        }
+      }
+    },
+    {
+      "id": "cloudflared",
+      "name": "Cloudflare Tunnel",
+      "description": "Sunucunuzu, port yönlendirme veya sabit IP gerekmeden Cloudflare üzerinden güvenli şekilde internete açan tünel istemcisi.",
+      "category": "Network",
+      "icon": "Cloud",
+      "defaultPort": "",
+      "version": "1.0.0",
+      "type": "infrastructure",
+      "dockerCompose": "version: '3.8'\nservices:\n  cloudflared:\n    image: cloudflare/cloudflared:latest\n    container_name: cloudflared\n    command: tunnel --no-autoupdate run\n    environment:\n      - TUNNEL_TOKEN=REPLACE_WITH_YOUR_CLOUDFLARE_TUNNEL_TOKEN\n    networks:\n      - ${DOCKER_NETWORK}\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
+      "infoUrl": "https://developers.cloudflare.com/cloudflare-one/connections/connect-networks",
+      "setupNote": "Bu servis bir Cloudflare Tunnel token'ı gerektirir. Orb kurulum sırasında özel bir secret alanı sunmaz; kurulumdan sonra Uygulama Detayı'ndan compose dosyasını açıp TUNNEL_TOKEN değerini Cloudflare Zero Trust panelinizden aldığınız gerçek token ile değiştirin, ardından yeniden başlatın.",
+      "update": {
+        "registry": {
+          "image": "cloudflare/cloudflared"
+        },
+        "release": {
+          "provider": "github_release",
+          "repository": "cloudflare/cloudflared"
+        }
+      }
+    },
+    {
+      "id": "rclone",
+      "name": "Rclone",
+      "description": "Bulut depolama servisleri (S3, Google Drive, Dropbox, B2 ve 70'in üzerinde sağlayıcı) için komut satırı ve web arayüzlü senkronizasyon aracı.",
+      "category": "Storage",
+      "icon": "FolderSync",
+      "defaultPort": "5572",
+      "version": "1.0.0",
+      "type": "infrastructure",
+      "dockerCompose": "version: '3.8'\nservices:\n  rclone:\n    image: rclone/rclone:latest\n    container_name: rclone\n    entrypoint: rclone\n    command: rcd --rc-web-gui --rc-addr :5572 --rc-web-gui-no-open-browser --rc-user=admin --rc-pass=change_this_password --config /config/rclone.conf\n    networks:\n      - ${DOCKER_NETWORK}\n    ports:\n      - \"5572:5572\"\n    volumes:\n      - ${USERDATA}/config:/config\n      - ${USERDATA}/data:/data\n    restart: unless-stopped\n\nnetworks:\n  ${DOCKER_NETWORK}:\n    external: true",
+      "infoUrl": "https://rclone.org",
+      "setupNote": "Web arayüzüne admin / (rc-pass olarak belirlediğiniz parola) ile giriş yapın ve ilk girişte mutlaka değiştirin. Bulut depolama hesaplarınızı (remote) web arayüzünden ekleyebilirsiniz.",
+      "update": {
+        "registry": {
+          "image": "rclone/rclone"
+        },
+        "release": {
+          "provider": "github_release",
+          "repository": "rclone/rclone"
+        }
+      }
     }
   ]
 }
